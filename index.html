@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSiteSafari · Black OSINT Search</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+        }
+
+        body {
+            background-color: #0b0d10;
+            color: #e4e6eb;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Шапка как на скриншоте Lolgame52 */
+        .header {
+            background: #0f1115;
+            border-bottom: 1px solid #2a2e36;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.9);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: #1a1e26;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 800;
+            color: #ff984f;
+            border: 1px solid #ff984f40;
+        }
+
+        .logo-text {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .logo-text span {
+            color: #ff984f;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+        }
+        .nav-menu a {
+            color: #b4b9c4;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            text-transform: uppercase;
+            padding: 8px 0;
+            border-bottom: 2px solid transparent;
+            transition: 0.2s;
+        }
+        .nav-menu a:hover {
+            color: #ff984f;
+            border-bottom-color: #ff984f;
+        }
+
+        /* Основной контейнер */
+        .main-content {
+            flex: 1;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 30px;
+            width: 100%;
+        }
+
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #b0b7c5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: #9aa1af;
+            border-left: 4px solid #ff984f;
+            padding-left: 25px;
+            margin-bottom: 45px;
+        }
+
+        /* Карточка поиска */
+        .search-card {
+            background: #14181f;
+            border-radius: 40px;
+            padding: 40px;
+            border: 1px solid #2f353f;
+            box-shadow: 0 25px 50px -10px #000000;
+            margin-bottom: 40px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .phone-wrapper {
+            flex: 2;
+            min-width: 300px;
+        }
+        .phone-wrapper input {
+            width: 100%;
+            background: #1e232b;
+            border: 1px solid #3c424e;
+            color: white;
+            font-size: 1.3rem;
+            padding: 20px 28px;
+            border-radius: 60px;
+            outline: none;
+            transition: 0.2s;
+        }
+        .phone-wrapper input:focus {
+            border-color: #ff984f;
+            box-shadow: 0 0 0 4px rgba(255,152,79,0.15);
+            background: #252b35;
+        }
+        .phone-wrapper input::placeholder {
+            color: #5f6877;
+            font-size: 1.1rem;
+        }
+
+        .search-btn {
+            background: #ff984f;
+            color: #0b0d10;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 1px;
+            border: 1px solid #ff984f;
+        }
+        .search-btn:hover {
+            background: #ff8533;
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px -8px #ff984f;
+        }
+
+        /* Статус и ошибки */
+        .status-area {
+            min-height: 40px;
+            margin: 15px 0 25px;
+            font-weight: 500;
+        }
+        .error-message {
+            color: #ff6b6b;
+            background: #2c1c1c;
+            padding: 12px 24px;
+            border-radius: 60px;
+            border-left: 4px solid #ff3b3b;
+        }
+        .success-message {
+            color: #6bcf7f;
+            background: #1a2a1e;
+            padding: 12px 24px;
+            border-radius: 60px;
+            border-left: 4px solid #2ecc71;
+        }
+
+        /* Результаты */
+        .results-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+        }
+        .results-header span {
+            background: #252b35;
+            padding: 6px 18px;
+            border-radius: 60px;
+            font-size: 1rem;
+            color: #ff984f;
+        }
+
+        .results-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .result-block {
+            background: #14181f;
+            border-radius: 30px;
+            padding: 30px;
+            border: 1px solid #2f353f;
+            transition: 0.2s;
+        }
+        .result-block:hover {
+            border-color: #ff984f60;
+            background: #171d25;
+        }
+
+        .db-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ff984f;
+            margin-bottom: 20px;
+            border-bottom: 1px dashed #3a404b;
+            padding-bottom: 12px;
+        }
+
+        .fields-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .field-item {
+            background: #1e232b;
+            border-radius: 20px;
+            padding: 18px 22px;
+            border-left: 4px solid #ff984f;
+        }
+        .field-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8f98a8;
+            margin-bottom: 8px;
+        }
+        .field-value {
+            font-size: 1.2rem;
+            font-weight: 500;
+            word-break: break-word;
+            color: #fff;
+        }
+
+        .empty-state {
+            background: #1a1f28;
+            padding: 60px;
+            text-align: center;
+            border-radius: 40px;
+            color: #6f7888;
+            border: 1px dashed #3a404b;
+            font-size: 1.2rem;
+        }
+
+        .loader {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255,152,79,0.3);
+            border-radius: 50%;
+            border-top-color: #ff984f;
+            animation: spin 0.8s infinite linear;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .footer {
+            background: #0a0c0f;
+            border-top: 1px solid #20242c;
+            padding: 25px 40px;
+            text-align: center;
+            color: #6a7283;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-area">
+            <div class="logo-icon">🕵️</div>
+            <div class="logo-text">WebSite<span>Safari</span></div>
+        </div>
+        <nav class="nav-menu">
+            <a href="#">ГЛАВНАЯ</a>
+            <a href="#">FORSTAGEN</a>
+            <a href="#">О НАС</a>
+            <a href="#">КОМАНДА</a>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <h1 class="hero-title">Black OSINT Search</h1>
+        <div class="hero-desc">
+            Введите номер телефона в формате +7XXXXXXXXXX<br>
+            и получите полные данные из баз
+        </div>
+
+        <div class="search-card">
+            <div class="input-group">
+                <div class="phone-wrapper">
+                    <input type="text" id="phoneNumber" placeholder="+7 999 999 99 99" value="+79261456789">
+                </div>
+                <button class="search-btn" id="searchButton">
+                    <span>🔍</span> ПОИСК
+                </button>
+            </div>
+
+            <div id="status" class="status-area"></div>
+
+            <div class="results-header">
+                📊 Результаты поиска <span id="resultCount">0</span>
+            </div>
+            <div id="resultsContainer" class="results-list">
+                <div class="empty-state">
+                    🔎 Введите номер и нажмите "ПОИСК" для начала
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>WebSiteSafari © 2026 · Black OSINT Interface · Токен: 5282351620:6CP0BRNN</p>
+    </footer>
+
+    <script>
+        // Конфигурация API
+        const API_TOKEN = "5282351620:6CP0BRNN";
+        const API_URL = "https://leakosintapi.com/";
+        const LIMIT = 300;
+        const LANG = "ru";
+
+        // Элементы DOM
+        const phoneInput = document.getElementById('phoneNumber');
+        const searchBtn = document.getElementById('searchButton');
+        const statusDiv = document.getElementById('status');
+        const resultsDiv = document.getElementById('resultsContainer');
+        const resultCount = document.getElementById('resultCount');
+
+        // Обработчик поиска
+        async function performSearch() {
+            let phone = phoneInput.value.trim();
+            
+            if (!phone) {
+                statusDiv.innerHTML = '<div class="error-message">❌ Введите номер телефона</div>';
+                return;
+            }
+
+            // Очищаем номер (оставляем только цифры и +)
+            let cleanPhone = phone.replace(/[^\d+]/g, '');
+            
+            // Добавляем +7 если нужно
+            if (!cleanPhone.startsWith('+')) {
+                if (cleanPhone.startsWith('7')) {
+                    cleanPhone = '+' + cleanPhone;
+                } else if (cleanPhone.startsWith('8')) {
+                    cleanPhone = '+7' + cleanPhone.substring(1);
+                } else {
+                    cleanPhone = '+7' + cleanPhone;
+                }
+            }
+
+            // Показываем загрузку
+            statusDiv.innerHTML = '<div><span class="loader"></span> Поиск данных...</div>';
+            resultsDiv.innerHTML = '';
+
+            try {
+                // Запрос к API
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        token: API_TOKEN,
+                        request: cleanPhone,
+                        limit: LIMIT,
+                        lang: LANG
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ошибка ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('API Response:', data);
+
+                // Проверка на ошибки
+                if (data.Error) {
+                    statusDiv.innerHTML = `<div class="error-message">❌ Ошибка API: ${data.Error}</div>`;
+                    resultsDiv.innerHTML = `<div class="empty-state">${data.Error}</div>`;
+                    return;
+                }
+
+                // Отображение результатов
+                displayResults(data);
+                statusDiv.innerHTML = '<div class="success-message">✅ Поиск завершен успешно</div>';
+
+            } catch (error) {
+                console.error('Search error:', error);
+                statusDiv.innerHTML = `<div class="error-message">❌ Ошибка: ${error.message}</div>`;
+                resultsDiv.innerHTML = `<div class="empty-state">Не удалось выполнить запрос</div>`;
+            }
+        }
+
+        // Функция отображения результатов
+        function displayResults(data) {
+            if (!data.List || Object.keys(data.List).length === 0) {
+                resultsDiv.innerHTML = '<div class="empty-state">📭 Ничего не найдено</div>';
+                resultCount.textContent = '0';
+                return;
+            }
+
+            let totalRecords = 0;
+            let html = '';
+
+            // Перебираем все базы данных
+            for (const [dbName, dbContent] of Object.entries(data.List)) {
+                if (!dbContent.Data || dbContent.Data.length === 0) continue;
+
+                const records = dbContent.Data;
+                totalRecords += records.length;
+
+                html += `<div class="result-block">`;
+                html += `<div class="db-title">📁 ${dbName} <span style="font-size:0.9rem; color:#8f98a8;">(${dbContent.InfoLeak || 'инфо'})</span></div>`;
+
+                // Перебираем записи в базе
+                records.forEach((record, idx) => {
+                    html += `<div class="fields-grid">`;
+                    
+                    // Сортируем поля так, чтобы важные были сверху
+                    const importantFields = ['фио', 'fio', 'name', 'номер', 'phone', 'tel', 'иин', 'iin', 'инн', 'родствен', 'relative', 'parents'];
+                    
+                    // Получаем все поля записи
+                    const entries = Object.entries(record);
+                    
+                    // Сортируем: важные поля первыми
+                    entries.sort((a, b) => {
+                        const aImportant = importantFields.some(key => a[0].toLowerCase().includes(key));
+                        const bImportant = importantFields.some(key => b[0].toLowerCase().includes(key));
+                        if (aImportant && !bImportant) return -1;
+                        if (!aImportant && bImportant) return 1;
+                        return 0;
+                    });
+
+                    // Выводим поля
+                    entries.forEach(([key, value]) => {
+                        let displayValue = value;
+                        if (typeof value === 'object') {
+                            displayValue = JSON.stringify(value, null, 2);
+                        }
+                        
+                        // Подсвечиваем важные поля
+                        let isImportant = importantFields.some(k => key.toLowerCase().includes(k));
+                        
+                        html += `
+                            <div class="field-item" style="${isImportant ? 'border-left-color: #ff984f; background: #222933;' : ''}">
+                                <div class="field-label">${key}</div>
+                                <div class="field-value">${displayValue}</div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += `</div>`;
+                    
+                    // Разделитель между несколькими записями в одной базе
+                    if (records.length > 1 && idx < records.length - 1) {
+                        html += `<hr style="border:0; border-top:1px solid #2f353f; margin:25px 0;">`;
+                    }
+                });
+                
+                html += `</div>`;
+            }
+
+            resultsDiv.innerHTML = html;
+            resultCount.textContent = totalRecords;
+        }
+
+        // Обработчики событий
+        searchBtn.addEventListener('click', performSearch);
+        
+        phoneInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Автоматический поиск при загрузке (можно закомментировать)
+        // setTimeout(() => performSearch(), 500);
+    </script>
+</body>
+                      </html>
